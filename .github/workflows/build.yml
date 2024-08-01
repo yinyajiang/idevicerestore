@@ -3,86 +3,86 @@ name: build
 on: workflow_dispatch
 
 jobs:
-  build-linux-ubuntu:
-    runs-on: ubuntu-latest
-    steps:
-    - name: install dependencies
-      run: |
-          sudo apt-get update
-          sudo apt-get install libzip-dev libcurl4-openssl-dev libusb-1.0-0-dev
-    - name: prepare environment
-      run: |
-          echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
-    - name: fetch libirecovery
-      uses: dawidd6/action-download-artifact@v3
-      with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
-        workflow: build.yml
-        name: libirecovery-latest_${{env.target_triplet}}
-        repo: libimobiledevice/libirecovery
-    - name: fetch libplist
-      uses: dawidd6/action-download-artifact@v3
-      with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
-        workflow: build.yml
-        name: libplist-latest_${{env.target_triplet}}
-        repo: libimobiledevice/libplist
-    - name: fetch libusbmuxd
-      uses: dawidd6/action-download-artifact@v3
-      with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
-        workflow: build.yml
-        name: libusbmuxd-latest_${{env.target_triplet}}
-        repo: libimobiledevice/libusbmuxd
-    - name: fetch libimobiledevice-glue
-      uses: dawidd6/action-download-artifact@v3
-      with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
-        workflow: build.yml
-        name: libimobiledevice-glue-latest_${{env.target_triplet}}
-        repo: libimobiledevice/libimobiledevice-glue
-    - name: fetch libimobiledevice
-      uses: dawidd6/action-download-artifact@v3
-      with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
-        workflow: build.yml
-        name: libimobiledevice-latest_${{env.target_triplet}}
-        repo: libimobiledevice/libimobiledevice
-    - name: fetch libtatsu
-      uses: dawidd6/action-download-artifact@v3
-      with:
-        github_token: ${{secrets.GITHUB_TOKEN}}
-        workflow: build.yml
-        name: libtatsu-latest_${{env.target_triplet}}
-        repo: libimobiledevice/libtatsu
-    - name: install external dependencies
-      run: |
-          mkdir extract
-          for I in *.tar; do
-            tar -C extract -xvf $I
-          done
-          rm -rf extract/lib
-          sudo cp -r extract/* /
-          sudo ldconfig
-    - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-    - name: autogen
-      run: ./autogen.sh PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
-    - name: make
-      run: make
-    - name: make install
-      run: sudo make install
-    - name: prepare artifact
-      run: |
-          mkdir -p dest
-          DESTDIR=`pwd`/dest make install
-          tar -C dest -cf idevicerestore.tar usr
-    - name: publish artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: idevicerestore-latest_${{env.target_triplet}}
-        path: idevicerestore.tar
+  # build-linux-ubuntu:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - name: install dependencies
+  #     run: |
+  #         sudo apt-get update
+  #         sudo apt-get install libzip-dev libcurl4-openssl-dev libusb-1.0-0-dev
+  #   - name: prepare environment
+  #     run: |
+  #         echo "target_triplet=`gcc -dumpmachine`" >> $GITHUB_ENV
+  #   - name: fetch libirecovery
+  #     uses: dawidd6/action-download-artifact@v3
+  #     with:
+  #       github_token: ${{secrets.GITHUB_TOKEN}}
+  #       workflow: build.yml
+  #       name: libirecovery-latest_${{env.target_triplet}}
+  #       repo: libimobiledevice/libirecovery
+  #   - name: fetch libplist
+  #     uses: dawidd6/action-download-artifact@v3
+  #     with:
+  #       github_token: ${{secrets.GITHUB_TOKEN}}
+  #       workflow: build.yml
+  #       name: libplist-latest_${{env.target_triplet}}
+  #       repo: libimobiledevice/libplist
+  #   - name: fetch libusbmuxd
+  #     uses: dawidd6/action-download-artifact@v3
+  #     with:
+  #       github_token: ${{secrets.GITHUB_TOKEN}}
+  #       workflow: build.yml
+  #       name: libusbmuxd-latest_${{env.target_triplet}}
+  #       repo: libimobiledevice/libusbmuxd
+  #   - name: fetch libimobiledevice-glue
+  #     uses: dawidd6/action-download-artifact@v3
+  #     with:
+  #       github_token: ${{secrets.GITHUB_TOKEN}}
+  #       workflow: build.yml
+  #       name: libimobiledevice-glue-latest_${{env.target_triplet}}
+  #       repo: libimobiledevice/libimobiledevice-glue
+  #   - name: fetch libimobiledevice
+  #     uses: dawidd6/action-download-artifact@v3
+  #     with:
+  #       github_token: ${{secrets.GITHUB_TOKEN}}
+  #       workflow: build.yml
+  #       name: libimobiledevice-latest_${{env.target_triplet}}
+  #       repo: libimobiledevice/libimobiledevice
+  #   - name: fetch libtatsu
+  #     uses: dawidd6/action-download-artifact@v3
+  #     with:
+  #       github_token: ${{secrets.GITHUB_TOKEN}}
+  #       workflow: build.yml
+  #       name: libtatsu-latest_${{env.target_triplet}}
+  #       repo: libimobiledevice/libtatsu
+  #   - name: install external dependencies
+  #     run: |
+  #         mkdir extract
+  #         for I in *.tar; do
+  #           tar -C extract -xvf $I
+  #         done
+  #         rm -rf extract/lib
+  #         sudo cp -r extract/* /
+  #         sudo ldconfig
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       fetch-depth: 0
+  #   - name: autogen
+  #     run: ./autogen.sh PKG_CONFIG_PATH=/usr/local/lib/pkgconfig
+  #   - name: make
+  #     run: make
+  #   - name: make install
+  #     run: sudo make install
+  #   - name: prepare artifact
+  #     run: |
+  #         mkdir -p dest
+  #         DESTDIR=`pwd`/dest make install
+  #         tar -C dest -cf idevicerestore.tar usr
+  #   - name: publish artifact
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: idevicerestore-latest_${{env.target_triplet}}
+  #       path: idevicerestore.tar
   build-macOS:
     runs-on: macOS-latest
     steps:
