@@ -1801,7 +1801,7 @@ int restore_send_nor(struct idevicerestore_client_t* client, plist_t message)
 
 	if (build_identity_has_component(client->restore->build_identity, "SepStage1") &&
 	    build_identity_get_component_path(client->restore->build_identity, "SepStage1", &sep_path) == 0) {
-		component = "SEPPatch";
+		component = "SepStage1";
 		ret = extract_component(client->ipsw, sep_path, &component_data, &component_size);
 		free(sep_path);
 		if (ret < 0) {
