@@ -122,18 +122,6 @@ static int restore_finished = 0;
 
 static int restore_device_connected = 0;
 
-bool plist_dict_has_key(plist_t dict, const char* key)
-{
-	if (dict == NULL || key == NULL) {
-		return false;
-	}
-	plist_t value = plist_dict_get_item(dict, key);
-	if (value == NULL) {
-		return false;
-	}
-	return true;
-}
-
 int restore_client_new(struct idevicerestore_client_t* client)
 {
 	struct restore_client_t* restore = (struct restore_client_t*) malloc(sizeof(struct restore_client_t));
@@ -2632,16 +2620,14 @@ static plist_t restore_get_se_firmware_data(struct idevicerestore_client_t* clie
 		debug("DEBUG: %s: using %s\n", __func__, comp_name);
 	}
 
-	if(plist_dict_has_key(arguments, "DeviceGeneratedTags")){
-		p_dgr = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
-		if (!p_dgr) {
-			info("NOTE: %s: No DeviceGeneratedRequest in firmware updater data request. Continuing anyway.\n", __func__);
-		} else if (!PLIST_IS_DICT(p_dgr)) {
-			error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
-			return NULL;
-		}
+	p_dgr = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
+	if (!p_dgr) {
+		info("NOTE: %s: No DeviceGeneratedRequest in firmware updater data request. Continuing anyway.\n", __func__);
+	} else if (!PLIST_IS_DICT(p_dgr)) {
+		error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
+		return NULL;
 	}
-	
+
 	if (build_identity_get_component_path(client->restore->build_identity, comp_name, &comp_path) < 0) {
 		error("ERROR: Unable to get path for '%s' component\n", comp_name);
 		return NULL;
@@ -2718,15 +2704,12 @@ static plist_t restore_get_savage_firmware_data(struct idevicerestore_client_t* 
 		return NULL;
 	}
 
-	plist_t device_generated_request = NULL;
-	if(plist_dict_has_key(arguments, "DeviceGeneratedTags")){
-		device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
-		if (device_generated_request && !PLIST_IS_DICT(device_generated_request)) {
-			error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
-			return NULL;
-		}
+	plist_t device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
+	if (device_generated_request && !PLIST_IS_DICT(device_generated_request)) {
+		error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
+		return NULL;
 	}
-	
+
 	/* create Savage request */
 	request = tss_request_new(NULL);
 	if (request == NULL) {
@@ -2941,18 +2924,15 @@ static plist_t restore_get_rose_firmware_data(struct idevicerestore_client_t* cl
 		plist_dict_set_item(parameters, "ApSupportsImg4", plist_new_bool(0));
 	}
 
-	if(plist_dict_has_key(arguments, "DeviceGeneratedTags")){
-		plist_t device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
-		if (device_generated_request) {
-			/* use DeviceGeneratedRequest if present */
-			plist_dict_merge(&request, device_generated_request);
-		} else {
-			/* add Rap,* tags from info dictionary to parameters */
-			plist_dict_merge(&parameters, p_info);
-		}
+	plist_t device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
+	if (device_generated_request) {
+		/* use DeviceGeneratedRequest if present */
+		plist_dict_merge(&request, device_generated_request);
+	} else {
+		/* add Rap,* tags from info dictionary to parameters */
+		plist_dict_merge(&parameters, p_info);
 	}
 
-	
 	/* add required tags for Rose TSS request */
 	tss_request_add_rose_tags(request, parameters, NULL);
 
@@ -3072,15 +3052,11 @@ static plist_t restore_get_veridian_firmware_data(struct idevicerestore_client_t
 		return NULL;
 	}
 
-	plist_t device_generated_request = NULL;
-	if(plist_dict_has_key(arguments, "DeviceGeneratedTags")){
-		device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
-		if (device_generated_request && !PLIST_IS_DICT(device_generated_request)) {
-			error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
-			return NULL;
-		}
+	plist_t device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
+	if (device_generated_request && !PLIST_IS_DICT(device_generated_request)) {
+		error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
+		return NULL;
 	}
-
 
 	/* create Veridian request */
 	request = tss_request_new(NULL);
