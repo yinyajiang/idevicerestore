@@ -2269,7 +2269,7 @@ static int restore_send_baseband_data(struct idevicerestore_client_t* client, pl
 		plist_dict_set_item(parameters, "BbGoldCertId", plist_new_uint(bb_cert_id));
 		plist_dict_set_item(parameters, "BbSNUM", plist_new_data((const char*)bb_snum, bb_snum_size));
 
-		tss_parameters_add_from_manifest(parameters, client->restore->build_identity, false);
+		tss_parameters_add_from_manifest(parameters, client->restore->build_identity, true);
 
 		/* create baseband request */
 		plist_t request = tss_request_new(NULL);
@@ -2652,7 +2652,7 @@ static plist_t restore_get_se_firmware_data(struct idevicerestore_client_t* clie
 	parameters = plist_new_dict();
 
 	/* add manifest for current build_identity to parameters */
-	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, false);
+	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, true);
 
 	/* add SE,* tags from info dictionary to parameters */
 	plist_dict_merge(&parameters, p_info);
@@ -2720,7 +2720,7 @@ static plist_t restore_get_savage_firmware_data(struct idevicerestore_client_t* 
 	parameters = plist_new_dict();
 
 	/* add manifest for current build_identity to parameters */
-	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, false);
+	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, true);
 
 	/* add Savage,* tags from info dictionary to parameters */
 	plist_dict_merge(&parameters, p_info);
@@ -2914,7 +2914,7 @@ static plist_t restore_get_rose_firmware_data(struct idevicerestore_client_t* cl
 	parameters = plist_new_dict();
 
 	/* add manifest for current build_identity to parameters */
-	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, false);
+	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, true);
 
 	plist_dict_set_item(parameters, "ApProductionMode", plist_new_bool(1));
 	if (client->image4supported) {
@@ -3069,7 +3069,7 @@ static plist_t restore_get_veridian_firmware_data(struct idevicerestore_client_t
 	parameters = plist_new_dict();
 
 	/* add manifest for current build_identity to parameters */
-	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, false);
+	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, true);
 
 	/* add BMU,* tags from info dictionary to parameters */
 	plist_dict_merge(&parameters, p_info);
@@ -3266,7 +3266,7 @@ static plist_t restore_get_tcon_firmware_data(struct idevicerestore_client_t* cl
 	parameters = plist_new_dict();
 
 	/* add manifest for current build_identity to parameters */
-	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, false);
+	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, true);
 
 	/* add Baobab,* tags from info dictionary to parameters */
 	plist_dict_merge(&parameters, p_info);
@@ -3350,7 +3350,7 @@ static plist_t restore_get_timer_firmware_data(struct idevicerestore_client_t* c
 	parameters = plist_new_dict();
 
 	/* add manifest for current build_identity to parameters */
-	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, false);
+	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, true);
 
 	plist_dict_set_item(parameters, "ApProductionMode", plist_new_bool(1));
 	if (client->image4supported) {
