@@ -3143,26 +3143,6 @@ static plist_t restore_get_veridian_firmware_data(struct idevicerestore_client_t
 	return response;
 }
 
-// const char** plist_array_to_c_array(plist_t array, uint32_t* out_count) {
-//     if (!array || out_count == NULL) return NULL;
-//     uint32_t array_count = plist_array_get_size(array);
-//     *out_count = array_count;
-//     const char** cArray = (const char**)malloc(array_count * sizeof(const char*));
-//     if (!cArray) return NULL;
-//     for (uint32_t i = 0; i < array_count; i++) {
-//         plist_t node = plist_array_get_item(array, i);
-//         char* value = NULL;
-//         plist_get_string_val(node, &value);
-//         if (value) {
-//             cArray[i] = strdup(value);
-//             free(value);
-//         } else {
-//             cArray[i] = NULL;
-//         }
-//     }
-//     return cArray;
-// }
-
 static plist_t restore_get_generic_firmware_data(struct idevicerestore_client_t* client, plist_t p_info, plist_t arguments)
 {
 	plist_t request = NULL;
@@ -3199,21 +3179,6 @@ static plist_t restore_get_generic_firmware_data(struct idevicerestore_client_t*
 		return NULL;
 	}
 	plist_dict_merge(&request, device_generated_request);
-
-
-	plist_t build_identity_tags = plist_access_path(arguments, 2, "DeviceGeneratedTags", "BuildIdentityTags");
-	if (PLIST_IS_ARRAY(build_identity_tags)) {
-		uint32_t i = 0;
-		for (i = 0; i < plist_array_get_size(build_identity_tags); i++) {
-			plist_t node = plist_array_get_item(build_identity_tags, i);
-			const char* key = plist_get_string_ptr(node, NULL);
-			plist_t item = plist_dict_get_item(client->restore->build_identity, key);
-			if (item) {
-				plist_dict_set_item(request, key, plist_copy(item));
-			}
-		}
-	}
-
 
 	info("Sending %s TSS request...\n", s_updater_name);
 	response = tss_request_send(request, client->tss_url);
