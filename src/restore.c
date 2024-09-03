@@ -3225,7 +3225,7 @@ static plist_t restore_get_generic_firmware_data(struct idevicerestore_client_t*
 	plist_dict_merge(&request, device_generated_request);
 
 	plist_t parameters = plist_new_dict();
-	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, false);
+	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, true);
 	plist_dict_merge(&request, parameters);
 	/* add tags from manifest to parameters */
 	plist_t build_identity_tags = plist_access_path(arguments, 2, "DeviceGeneratedTags", "BuildIdentityTags");
