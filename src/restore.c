@@ -2823,7 +2823,7 @@ static plist_t restore_get_yonkers_firmware_data(struct idevicerestore_client_t*
 	parameters = plist_new_dict();
 
 	/* add manifest for current build_identity to parameters */
-	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, true);
+	tss_parameters_add_from_manifest(parameters, client->restore->build_identity, false);
 
 	/* add Yonkers,* tags from info dictionary to parameters */
 	plist_dict_merge(&parameters, p_info);
