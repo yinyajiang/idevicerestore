@@ -2687,7 +2687,7 @@ static plist_t restore_get_se_firmware_data(struct idevicerestore_client_t* clie
 	return response;
 }
 
-static plist_t restore_get_savage_firmware_data(struct idevicerestore_client_t* client, plist_t p_info, plist_t arguments)
+static plist_t restore_get_savage_firmware_data(struct idevicerestore_client_t* client, plist_t p_info)
 {
 	char *comp_name = NULL;
 	char *comp_path = NULL;
@@ -2701,12 +2701,6 @@ static plist_t restore_get_savage_firmware_data(struct idevicerestore_client_t* 
 
 	if (!client || !client->restore || !client->restore->build_identity) {
 		error("ERROR: %s: idevicerestore client not initialized?!\n", __func__);
-		return NULL;
-	}
-
-	plist_t device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
-	if (device_generated_request && !PLIST_IS_DICT(device_generated_request)) {
-		error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
 		return NULL;
 	}
 
@@ -2726,7 +2720,7 @@ static plist_t restore_get_savage_firmware_data(struct idevicerestore_client_t* 
 	plist_dict_merge(&parameters, p_info);
 
 	/* add required tags for Savage TSS request */
-	tss_request_add_savage_tags(request, parameters, device_generated_request, &comp_name);
+	tss_request_add_savage_tags(request, parameters, NULL, &comp_name);
 
 	plist_free(parameters);
 
@@ -2789,7 +2783,7 @@ static plist_t restore_get_savage_firmware_data(struct idevicerestore_client_t* 
 	return response;
 }
 
-static plist_t restore_get_yonkers_firmware_data(struct idevicerestore_client_t* client, plist_t p_info, plist_t arguments)
+static plist_t restore_get_yonkers_firmware_data(struct idevicerestore_client_t* client, plist_t p_info)
 {
 	char *comp_name = NULL;
 	char *comp_path = NULL;
@@ -2802,12 +2796,6 @@ static plist_t restore_get_yonkers_firmware_data(struct idevicerestore_client_t*
 
 	if (!client || !client->restore || !client->restore->build_identity) {
 		error("ERROR: %s: idevicerestore client not initialized?!\n", __func__);
-		return NULL;
-	}
-
-	plist_t device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
-	if (device_generated_request && !PLIST_IS_DICT(device_generated_request)) {
-		error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
 		return NULL;
 	}
 
@@ -2829,7 +2817,7 @@ static plist_t restore_get_yonkers_firmware_data(struct idevicerestore_client_t*
 	plist_dict_merge(&parameters, p_info);
 
 	/* add required tags for Yonkers TSS request */
-	tss_request_add_yonkers_tags(request, parameters, device_generated_request, &comp_name);
+	tss_request_add_yonkers_tags(request, parameters, NULL, &comp_name);
 
 	plist_free(parameters);
 
@@ -3036,7 +3024,7 @@ static plist_t restore_get_rose_firmware_data(struct idevicerestore_client_t* cl
 	return response;
 }
 
-static plist_t restore_get_veridian_firmware_data(struct idevicerestore_client_t* client, plist_t p_info, plist_t arguments)
+static plist_t restore_get_veridian_firmware_data(struct idevicerestore_client_t* client, plist_t p_info)
 {
 	char *comp_name = "BMU,FirmwareMap";
 	char *comp_path = NULL;
@@ -3049,12 +3037,6 @@ static plist_t restore_get_veridian_firmware_data(struct idevicerestore_client_t
 
 	if (!client || !client->restore || !client->restore->build_identity) {
 		error("ERROR: %s: idevicerestore client not initialized?!\n", __func__);
-		return NULL;
-	}
-
-	plist_t device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
-	if (device_generated_request && !PLIST_IS_DICT(device_generated_request)) {
-		error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
 		return NULL;
 	}
 
@@ -3075,7 +3057,7 @@ static plist_t restore_get_veridian_firmware_data(struct idevicerestore_client_t
 	plist_dict_merge(&parameters, p_info);
 
 	/* add required tags for Veridian TSS request */
-	tss_request_add_veridian_tags(request, parameters, device_generated_request);
+	tss_request_add_veridian_tags(request, parameters, NULL);
 
 	plist_free(parameters);
 
@@ -3198,7 +3180,7 @@ static plist_t restore_get_generic_firmware_data(struct idevicerestore_client_t*
 	return response;
 }
 
-static plist_t restore_get_tcon_firmware_data(struct idevicerestore_client_t* client, plist_t p_info, plist_t arguments)
+static plist_t restore_get_tcon_firmware_data(struct idevicerestore_client_t* client, plist_t p_info)
 {
 	char *comp_name = "Baobab,TCON";
 	char *comp_path = NULL;
@@ -3211,12 +3193,6 @@ static plist_t restore_get_tcon_firmware_data(struct idevicerestore_client_t* cl
 
 	if (!client || !client->restore || !client->restore->build_identity) {
 		error("ERROR: %s: idevicerestore client not initialized?!\n", __func__);
-		return NULL;
-	}
-
-	plist_t device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
-	if (device_generated_request && !PLIST_IS_DICT(device_generated_request)) {
-		error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
 		return NULL;
 	}
 
@@ -3237,7 +3213,7 @@ static plist_t restore_get_tcon_firmware_data(struct idevicerestore_client_t* cl
 	plist_dict_merge(&parameters, p_info);
 
 	/* add required tags for Baobab TSS request */
-	tss_request_add_tcon_tags(request, parameters, device_generated_request);
+	tss_request_add_tcon_tags(request, parameters, NULL);
 
 	plist_free(parameters);
 
@@ -3278,7 +3254,7 @@ static plist_t restore_get_tcon_firmware_data(struct idevicerestore_client_t* cl
 	return response;
 }
 
-static plist_t restore_get_timer_firmware_data(struct idevicerestore_client_t* client, plist_t p_info, plist_t arguments)
+static plist_t restore_get_timer_firmware_data(struct idevicerestore_client_t* client, plist_t p_info)
 {
 	char comp_name[64];
 	char *comp_path = NULL;
@@ -3296,12 +3272,6 @@ static plist_t restore_get_timer_firmware_data(struct idevicerestore_client_t* c
 
 	if (!client || !client->restore || !client->restore->build_identity) {
 		error("ERROR: %s: idevicerestore client not initialized?!\n", __func__);
-		return NULL;
-	}
-
-	plist_t device_generated_request = plist_dict_get_item(arguments, "DeviceGeneratedRequest");
-	if (device_generated_request && !PLIST_IS_DICT(device_generated_request)) {
-		error("ERROR: %s: DeviceGeneratedRequest has invalid type!\n", __func__);
 		return NULL;
 	}
 
@@ -3375,7 +3345,7 @@ static plist_t restore_get_timer_firmware_data(struct idevicerestore_client_t* c
 	}
 
 	/* add required tags for Timer TSS request */
-	tss_request_add_timer_tags(request, parameters, device_generated_request);
+	tss_request_add_timer_tags(request, parameters, NULL);
 
 	plist_free(parameters);
 
@@ -3672,9 +3642,9 @@ static int restore_send_firmware_updater_data(struct idevicerestore_client_t* cl
 		plist_t p_info2 = plist_dict_get_item(p_info, "YonkersDeviceInfo");
 		if (p_info2 && plist_get_node_type(p_info2) == PLIST_DICT) {
 			fwtype = "Yonkers";
-			fwdict = restore_get_yonkers_firmware_data(client, p_info2, arguments);
+			fwdict = restore_get_yonkers_firmware_data(client, p_info2);
 		} else {
-			fwdict = restore_get_savage_firmware_data(client, p_info, arguments);
+			fwdict = restore_get_savage_firmware_data(client, p_info);
 		}
 		if (fwdict == NULL) {
 			error("ERROR: %s: Couldn't get %s firmware data\n", __func__, fwtype);
@@ -3687,13 +3657,13 @@ static int restore_send_firmware_updater_data(struct idevicerestore_client_t* cl
 			goto error_out;
 		}
 	} else if (strcmp(s_updater_name, "T200") == 0) {
-		fwdict = restore_get_veridian_firmware_data(client, p_info, arguments);
+		fwdict = restore_get_veridian_firmware_data(client, p_info);
 		if (fwdict == NULL) {
 			error("ERROR: %s: Couldn't get Veridian firmware data\n", __func__);
 			goto error_out;
 		}
 	} else if (strcmp(s_updater_name, "AppleTCON") == 0) {
-		fwdict = restore_get_tcon_firmware_data(client, p_info, arguments);
+		fwdict = restore_get_tcon_firmware_data(client, p_info);
 		if (fwdict == NULL) {
 			error("ERROR: %s: Couldn't get AppleTCON firmware data\n", __func__);
 			goto error_out;
@@ -3705,7 +3675,7 @@ static int restore_send_firmware_updater_data(struct idevicerestore_client_t* cl
 			goto error_out;
 		}
 	} else if (strcmp(s_updater_name, "AppleTypeCRetimer") == 0) {
-		fwdict = restore_get_timer_firmware_data(client, p_info, arguments);
+		fwdict = restore_get_timer_firmware_data(client, p_info);
 		if (fwdict == NULL) {
 			error("ERROR: %s: Couldn't get AppleTypeCRetimer firmware data\n", __func__);
 			goto error_out;
