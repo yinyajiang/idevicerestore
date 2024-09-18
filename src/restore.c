@@ -4220,7 +4220,7 @@ int restore_send_personalized_boot_object_v3(struct idevicerestore_client_t* cli
 		int currentTime = time(NULL);
 		if(currentTime - last_output_time >= 1.0){
 			printf("\n!upload=>%s : progress=>%d : time=>%d!\n", component, (int)((total - i) * 100 / total),  currentTime);
-			last_output_time = currentTime
+			last_output_time = currentTime;
 		}
 	}
 	free(data);
