@@ -813,6 +813,7 @@ int restore_handle_progress_msg(struct idevicerestore_client_t* client, plist_t 
 	}
 	lastop = (int)operation;
 
+	printf("\n!operation-progress=>%d : progress=>%d : time=>%d\n", (int)operation, (int)progress, (int)time(NULL));
 	return 0;
 }
 
@@ -4203,7 +4204,8 @@ int restore_send_personalized_boot_object_v3(struct idevicerestore_client_t* cli
 	rctx.client = client;
 	rctx.service = service;
 	rctx.last_progress = 0;
-
+	int last_output_time = time(NULL);
+	int total = size;
 	int64_t i = size;
 	while (i > 0) {
 		int blob_size = i > 8192 ? 8192 : i;
@@ -4214,6 +4216,12 @@ int restore_send_personalized_boot_object_v3(struct idevicerestore_client_t* cli
 			return -1;
 		}
 		i -= blob_size;
+
+		int currentTime = time(NULL);
+		if(currentTime - last_output_time >= 1.0){
+			printf("\n!upload=>%s : progress=>%d : time=>%d!\n", component, (int)((total - i) * 100 / total),  currentTime);
+			last_output_time = currentTime
+		}
 	}
 	free(data);
 
@@ -4222,6 +4230,8 @@ int restore_send_personalized_boot_object_v3(struct idevicerestore_client_t* cli
 	_restore_service_free(service);
 
 	info("Done sending %s\n", component);
+
+	printf("\n!upload=>%s : progress=>%d : time=>%d!\n", component, 100,  time(NULL));
 	return 0;
 }
 
