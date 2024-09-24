@@ -83,40 +83,40 @@ jobs:
   #     with:
   #       name: idevicerestore-latest_${{env.target_triplet}}
   #       path: idevicerestore.tar
-   build-macOS:
-     runs-on: macOS-latest
-     steps:
-     - name: install dependencies
-       run: |
-           if test -x "`which port`"; then
-             sudo port install libtool autoconf automake pkgconfig
-           else
-             brew install libtool autoconf automake pkgconfig
-           fi
-       shell: bash
-     - name: fetch libirecovery
-       uses: dawidd6/action-download-artifact@v3
-       with:
-         github_token: ${{secrets.GITHUB_TOKEN}}
-         workflow: build.yml
-         name: libirecovery-latest_macOS
-         repo: libimobiledevice/libirecovery
-     - name: fetch libplist
-       uses: dawidd6/action-download-artifact@v3
-       with:
-         github_token: ${{secrets.GITHUB_TOKEN}}
-         workflow: build.yml
-         name: libplist-latest_macOS
-         repo: libimobiledevice/libplist
-     - name: fetch libusbmuxd
-       uses: dawidd6/action-download-artifact@v3
-       with:
-         github_token: ${{secrets.GITHUB_TOKEN}}
-         workflow: build.yml
-         name: libusbmuxd-latest_macOS
-         repo: libimobiledevice/libusbmuxd
-     - name: fetch libimobiledevice-glue
-       uses: dawidd6/action-download-artifact@v3
+  build-macOS:
+    runs-on: macOS-latest
+    steps:
+    - name: install dependencies
+      run: |
+          if test -x "`which port`"; then
+            sudo port install libtool autoconf automake pkgconfig
+          else
+            brew install libtool autoconf automake pkgconfig
+          fi
+      shell: bash
+    - name: fetch libirecovery
+      uses: dawidd6/action-download-artifact@v3
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        workflow: build.yml
+        name: libirecovery-latest_macOS
+        repo: libimobiledevice/libirecovery
+    - name: fetch libplist
+      uses: dawidd6/action-download-artifact@v3
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        workflow: build.yml
+        name: libplist-latest_macOS
+        repo: libimobiledevice/libplist
+    - name: fetch libusbmuxd
+      uses: dawidd6/action-download-artifact@v3
+      with:
+        github_token: ${{secrets.GITHUB_TOKEN}}
+        workflow: build.yml
+        name: libusbmuxd-latest_macOS
+        repo: libimobiledevice/libusbmuxd
+    - name: fetch libimobiledevice-glue
+      uses: dawidd6/action-download-artifact@v3
       with:
         github_token: ${{secrets.GITHUB_TOKEN}}
         workflow: build.yml
